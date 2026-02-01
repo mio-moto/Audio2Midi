@@ -38,9 +38,12 @@ jobs:
           -f net10.0
           -r ${{ matrix.rid }}
           --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:IncludeAllContentForSelfExtract=true
+          -p:PublishReadyToRun=true
+          -p:PublishTrimmed=true
           -o publish/${{ matrix.rid }}
-          /p:PublishReadyToRun=true
-          /p:PublishTrimmed=true
       - name: Fix permissions (macOS)
         if: matrix.rid == 'osx-arm64'
         run: chmod +x publish/${{ matrix.rid }}/${{ matrix.exe }}
