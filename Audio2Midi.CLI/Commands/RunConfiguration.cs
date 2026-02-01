@@ -50,8 +50,8 @@ public class RunConfiguration
             Converters =
             {
                     new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
-                
-            }
+            },
+            TypeInfoResolver = new System.Text.Json.Serialization.Metadata.DefaultJsonTypeInfoResolver()
         };
         var configuration = await JsonSerializer.DeserializeAsync<Configuration>(configurationFile.OpenRead(), options);
         if (configuration is null)

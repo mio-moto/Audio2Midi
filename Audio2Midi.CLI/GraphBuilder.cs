@@ -2,6 +2,7 @@
 using Audio2Midi.Core.Receivers;
 using Audio2Midi.Core.Reducers;
 using Audio2Midi.Core.Sources;
+using Melanchall.DryWetMidi.Core;
 
 namespace Audio2Midi.CLI;
 
@@ -65,6 +66,15 @@ public class GraphBuilder
                 {
                     Console.WriteLine($">>> Translating into CC MIDI Device='{midiDevice.Name}' with Channel='{ccFormat.Channel}', CC='{ccFormat.CC}'");
                     var sender = new CCMidiSender(midiDevice, lastReceivePeak, ccFormat.Channel, ccFormat.CC, ccFormat.RemapRange);
+                    Task.Factory.StartNew(() => { sender.Run(new TimeSpan(0, 0, 0, 0, 1000 / (midiBinding.Framerate ?? 50))); });
+                } else if (midiBinding.Format is SysexMidiFormat sysexFormat)
+                {
+                    Console.WriteLine($">>> Translating as Sysex Device='{midiDevice.Name}' with Message Template='{sysexFormat.sysex}'" );
+                    var sender = new SysexMidiSender(midiDevice, lastReceivePeak, sysexFormat.sysex, sysexFormat.RemapRange);
+                    if (sysexFormat.SendFirst != null)
+                    {
+                        midiDevice.SendEvent(new NormalSysExEvent(SysexMidiSender.ParseFunctor(sysexFormat.SendFirst)(0)));
+                    }
                     Task.Factory.StartNew(() => { sender.Run(new TimeSpan(0, 0, 0, 0, 1000 / (midiBinding.Framerate ?? 50))); });
                 }
             }

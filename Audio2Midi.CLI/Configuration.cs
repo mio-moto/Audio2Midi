@@ -13,6 +13,8 @@ public enum TrackOperation
     PeakLogarithmic
 }
 
+public record SysexMidiFormat(string sysex, ClampRange? RemapRange, string? SendFirst) : MidiFormat;
+
 /**
  * A CC midi message, with a target channel, the CC and optionall a remapping of the incoming normalized value into a target range.
  * Otherwise 0...127
@@ -24,6 +26,7 @@ public record CCMidiFormat(int Channel, int CC, ClampRange? RemapRange) : MidiFo
  */
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(CCMidiFormat), typeDiscriminator: "CC")]
+[JsonDerivedType(typeof(SysexMidiFormat), typeDiscriminator: "Sysex")]
 public record MidiFormat();
 
 /**

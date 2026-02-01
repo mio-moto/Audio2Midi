@@ -100,6 +100,26 @@ self.midirx_cb = function(self, event, header)
 end
 ```
 
+## Sysex
+
+Sysex conversion is currently in a very simple state. A sysex sender allows to initially send some sysex command, then
+replaces the hex value as sysex byte. The value insertion is denoted by a `{x}` in the `sysex` string For example a Launch Control XL 3 can be configured as such:
+
+```jsonc
+{
+  "device": "LCXL3 1 MIDI",
+  "framerate": 20,
+  "format": {
+    "type": "Sysex",
+    "sendFirst": "0x00 0x20 0x29 0x02 0x15 0x02 0x7F 0xF7", // set the device into DAW mode
+    "sysex": "0x00 0x20 0x29 0x02 0x15 0x01 0x53 0x33 {x} {x} {x} 0xF7" // control the first button row LED
+  }
+}
+```
+
+
+
+
 # License
 
 This project is licensed under the MIT License.  
