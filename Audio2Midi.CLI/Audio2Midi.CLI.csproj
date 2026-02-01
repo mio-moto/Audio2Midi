@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
-        <AssemblyName>Audio2Midi-osx-arm64</AssemblyName>
+        <AssemblyName>Audio2Midi-macos-arm64</AssemblyName>
     </PropertyGroup>
 
 
