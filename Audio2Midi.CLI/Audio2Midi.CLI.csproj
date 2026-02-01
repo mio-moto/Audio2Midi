@@ -8,8 +8,20 @@
         <PublishReadyToRun>true</PublishReadyToRun>
         <PublishTrimmed>true</PublishTrimmed>
         <SelfContained>true</SelfContained>
-        <AssemblyName>Audio2Midi</AssemblyName>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+        <AssemblyName>Audio2Midi-win-x64</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+        <AssemblyName>Audio2Midi-linux-x64</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
+        <AssemblyName>Audio2Midi-osx-arm64</AssemblyName>
+    </PropertyGroup>
+
 
     <ItemGroup>
         <PackageReference Include="System.CommandLine" Version="2.0.2" />

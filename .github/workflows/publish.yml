@@ -17,10 +17,10 @@ jobs:
         include:
           - rid: win-x64
             artifact: Audio2Midi-win-x64
-            exe: Audio2Midi.exe
+            exe: Audio2Midi-win-x64.exe
           - rid: osx-arm64
             artifact: Audio2Midi-osx-arm64
-            exe: Audio2Midi
+            exe: Audio2Midi-mac-arm64
 
     steps:
       - name: Checkout
