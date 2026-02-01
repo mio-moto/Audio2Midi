@@ -5,18 +5,21 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishTrimmed>true</PublishTrimmed>
+        <SelfContained>true</SelfContained>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.CommandLine" Version="2.0.2" />
+        <PackageReference Include="System.CommandLine" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Audio2Midi.Core\Audio2Midi.Core.csproj" />
+        <ProjectReference Include="..\Audio2Midi.Core\Audio2Midi.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Configuration\" />
+        <Folder Include="Configuration\" />
     </ItemGroup>
 
 </Project>

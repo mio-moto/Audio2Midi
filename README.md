@@ -99,3 +99,8 @@ self.midirx_cb = function(self, event, header)
   end
 end
 ```
+
+# License
+
+This project is licensed under the MIT License.  
+The included native Bass libraries have individual licensing terms, which is free for non-commercial use.

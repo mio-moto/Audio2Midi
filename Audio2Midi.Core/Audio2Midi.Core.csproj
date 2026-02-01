@@ -5,14 +5,44 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RuntimeIdentifiers>win-x64;linux-x64;osx-arm64</RuntimeIdentifiers>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="ManagedBass" Version="4.0.2" />
-      <PackageReference Include="ManagedBass.Midi" Version="4.0.2" />
-      <PackageReference Include="ManagedBass.Wasapi" Version="4.0.2" />
-      <PackageReference Include="Melanchall.DryWetMidi" Version="8.0.3" />
-      <PackageReference Include="System.CommandLine" Version="2.0.2" />
+        <PackageReference Include="ManagedBass" Version="4.0.2" />
+        <PackageReference Include="ManagedBass.Midi" Version="4.0.2" />
+        <PackageReference Include="ManagedBass.Wasapi" Version="4.0.2" />
+        <PackageReference Include="Melanchall.DryWetMidi" Version="8.0.3" />
+        <PackageReference Include="System.CommandLine" Version="2.0.2" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+        <None Include="Dependencies\win\bass.dll">
+            <Link>bass.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+        <None Update="Dependencies\win\basswasapi.dll">
+            <Link>basswasapi.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+        <None Include="Dependencies\linux\libbass.so">
+            <Link>bass.so</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
+        <None Include="Dependencies\macos\libbass.dylib">
+            <Link>bass.dylib</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
