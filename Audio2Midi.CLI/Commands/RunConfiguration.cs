@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Audio2Midi.Core;
+using Audio2Midi.Core.Other;
 using Melanchall.DryWetMidi.Multimedia;
 
 namespace Audio2Midi.CLI.Commands;
@@ -72,13 +73,29 @@ public class RunConfiguration
 
         var deviceProvider = new DeviceProvider();
         deviceProvider.AddCaptureDevices(configuration.Devices);
-        var midiTargets = configuration.Devices.SelectMany(x => x.Tracks.SelectMany(y => y.Target));
-        deviceProvider.AddMidiDeviceByName(midiTargets.Select(x => x.Device).Distinct().ToArray());
+        var midiDeviceTargets = configuration.Devices.SelectMany(x => x.Tracks.SelectMany(y => y.Target.Select(x => x.Device))).ToList();
+        var midiTempoTarget = configuration.Tempo.Select(x => x.To).ToList();
+        midiDeviceTargets.AddRange(midiTempoTarget);
+        deviceProvider.AddMidiOutputDevicesByName(midiDeviceTargets.Distinct().ToArray());
+
+        var midiInputs = configuration.Tempo.Select(x => x.From);
+        deviceProvider.AddMidiInputDevicesByName(midiInputs.Distinct().ToArray());
 
         var graphBuilder = new GraphBuilder(deviceProvider);
         foreach (var assignment in configuration.Devices)
         {
             graphBuilder.BuildGraphPipeline(assignment);
+        }
+
+        var tempos = new List<TempoToCC>();
+        foreach (var tempoConfig in configuration.Tempo)
+        {
+            var from = tempoConfig.From;
+            var to = tempoConfig.To;
+
+            var fromDevice = deviceProvider.MidiInputDevices.First(x => x.Name == from);
+            var toDevice = deviceProvider.MidiOutputDevices.First(x => x.Name == to);
+            tempos.Add(new TempoToCC(fromDevice, toDevice, tempoConfig));
         }
 
         Console.ReadLine();

@@ -61,7 +61,7 @@ public class GraphBuilder
             
             foreach (var midiBinding in track.Target)
             {
-                var midiDevice = DeviceProvider.MidiDevices.First(x => x.Name == midiBinding.Device);
+                var midiDevice = DeviceProvider.MidiOutputDevices.First(x => x.Name == midiBinding.Device);
                 if (midiBinding.Format is CCMidiFormat ccFormat)
                 {
                     Console.WriteLine($">>> Translating into CC MIDI Device='{midiDevice.Name}' with Channel='{ccFormat.Channel}', CC='{ccFormat.CC}'");

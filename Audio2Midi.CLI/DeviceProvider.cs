@@ -8,22 +8,24 @@ public class DeviceProvider
 {
     public ICollection<Device> SourceDevices { get; private set; }
     public IDictionary<Device, CaptureDevice> CaptureDevices { get; private set; }
-    public ICollection<OutputDevice> MidiDevices { get; private set; }
+    public ICollection<OutputDevice> MidiOutputDevices { get; private set; }
+    public ICollection<InputDevice> MidiInputDevices { get; private set; }
 
     public DeviceProvider()
     {
         SourceDevices = new List<Device>();
         CaptureDevices = new Dictionary<Device, CaptureDevice>();
-        MidiDevices = new List<OutputDevice>();
+        MidiOutputDevices = new List<OutputDevice>();
+        MidiInputDevices = new List<InputDevice>();
     }
     
     /**
      * Initialized requested MIDI devices and returns a list of them.
      */
-    public ICollection<OutputDevice> AddMidiDeviceByName(params string[] deviceNames)
+    public ICollection<OutputDevice> AddMidiOutputDevicesByName(params string[] deviceNames)
     {
-        var existingDevices = MidiDevices.Where(x => deviceNames.Contains(x.Name));
-        var missingDevices = deviceNames.Where(x => MidiDevices.All(y => y.Name != x));
+        var existingDevices = MidiOutputDevices.Where(x => deviceNames.Contains(x.Name));
+        var missingDevices = deviceNames.Where(x => MidiOutputDevices.All(y => y.Name != x));
         
         var allMidiDevices = OutputDevice.GetAll();
         var targetDevices = allMidiDevices.Where(d => missingDevices.Contains(d.Name)).ToList();
@@ -31,7 +33,24 @@ public class DeviceProvider
         {
             Console.WriteLine($"Preparing MIDI Device Name='{targetDevice.Name}'");
             targetDevice.PrepareForEventsSending();
-            MidiDevices.Add(targetDevice);
+            MidiOutputDevices.Add(targetDevice);
+        }
+
+        return targetDevices;
+    }
+
+    public ICollection<InputDevice> AddMidiInputDevicesByName(params string[] deviceNames)
+    {
+        var existingDevices = MidiInputDevices.Where(x => deviceNames.Contains(x.Name));
+        var missingDevices = deviceNames.Where(x => MidiInputDevices.All(y => y.Name != x));
+        
+        var allMidiDevices = InputDevice.GetAll();
+        var targetDevices = allMidiDevices.Where(d => missingDevices.Contains(d.Name)).ToList();
+        foreach (var targetDevice in targetDevices)
+        {
+            Console.WriteLine($"Preparing MIDI Device Name='{targetDevice.Name}'");
+            targetDevice.StartEventsListening();
+            MidiInputDevices.Add(targetDevice);
         }
 
         return targetDevices;

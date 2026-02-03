@@ -16,8 +16,8 @@ namespace Audio2Midi.Core
             outputDevice.PrepareForEventsSending();
         }
 
-        public static ICollection<OutputDevice> ListMidiDevices() => OutputDevice.GetAll();
-        
+        public static ICollection<InputDevice> ListMidiInputDevices() => InputDevice.GetAll();
+        public static ICollection<OutputDevice> ListMidiOutputDevices() => OutputDevice.GetAll();
         public bool RecordCallback(int handle, IntPtr buffer, int length, IntPtr user)
         {
             // length is in bytes, 16-bit PCM = 2 bytes per sample

@@ -18,13 +18,20 @@ public abstract class ListMidiDevices
 
     private static int ExecuteListMidiDevices()
     {
-        var devices = MidiSender.ListMidiDevices();
-        var longestName = devices.Max(device => device.Name.Length);
-        var header = $" Midi Device\n{"".PadRight(longestName + 2, '-')}";
+        var outputDevices = MidiSender.ListMidiOutputDevices();
+        var inputDevices = MidiSender.ListMidiInputDevices();
+        var allNames = outputDevices.Select(x => x.Name).ToList();
+        allNames.AddRange(inputDevices.Select(x => x.Name).ToList());
+        var longestName = allNames.Max(name => name.Length);
+        var header = $" Midi Device\n{"".PadRight(longestName + 3, '-')}";
         Console.WriteLine(header);
-        foreach (var device in devices)
+        foreach (var device in inputDevices)
         {
-            Console.WriteLine($" {device.Name}");
+            Console.WriteLine($"< {device.Name}");
+        }
+        foreach (var device in outputDevices)
+        {
+            Console.WriteLine($"> {device.Name}");
         }
 
         return 0;

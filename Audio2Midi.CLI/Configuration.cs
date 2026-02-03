@@ -58,8 +58,21 @@ public record CaptureDeviceAssignment(string? Driver, string? Device, TrackAssig
 }
 
 
+public record TempoConfig(
+    int Channel,
+    string From,
+    string To,
+    int? PulseCountCC,
+    int? BeatCountCC,
+    int? BarCountCC,
+    int? PhraseCountCC,
+    int BarsPerPhrase = 8,
+    int BeatsPerBar = 4,
+    int PulsePerBeat = 6,
+    int PPQN = 24) : Core.Other.TempoConfig(Channel, PulseCountCC, BeatCountCC, BarCountCC, PhraseCountCC, BarsPerPhrase, BeatsPerBar, PulsePerBeat, PPQN);
+
 /**
  * Root configuration format, declares N devices that are being bound.
  * <example>{ devices: [{...}] }</example>
  */
-public record Configuration(CaptureDeviceAssignment[] Devices);
+public record Configuration(CaptureDeviceAssignment[] Devices, TempoConfig[] Tempo);
